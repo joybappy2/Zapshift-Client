@@ -42,7 +42,7 @@ const DeliveryFeatures = () => {
           {/* Right */}
           <div className="flex flex-col">
             <h4 className="text-xl md:text-2xl font-bold mb-4">
-              Live Parcel Tracking
+            100% Safe Delivery
             </h4>
             <p>
               Stay updated in real-time with our live parcel tracking feature.
@@ -63,7 +63,7 @@ const DeliveryFeatures = () => {
           {/* Right */}
           <div className="flex flex-col">
             <h4 className="text-xl md:text-2xl font-bold mb-4">
-              Live Parcel Tracking
+            24/7 Call Center Support
             </h4>
             <p>
               Stay updated in real-time with our live parcel tracking feature.
