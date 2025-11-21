@@ -21,22 +21,22 @@ const Home = () => {
 
       {/* Our Services */}
       <div>
-        <OurServices/>
+        <OurServices />
       </div>
 
       {/* Brands Marquee */}
-      <div className="mb-10">
-      <BrandsMarquee/>
+      <div className="my-20 ">
+        <BrandsMarquee />
       </div>
 
       {/* Features */}
       <div>
-          <DeliveryFeatures/>
+        <DeliveryFeatures />
       </div>
 
       {/* Reviews */}
       <div className="my-20">
-       <Reviews/>
+        <Reviews />
       </div>
     </div>
   );

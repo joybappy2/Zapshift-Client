@@ -6,8 +6,8 @@ const OurServices = () => {
 
   return (
     <>
-      <div className="bg-secondary text-white p-16 mb-20 mt-28 rounded-2xl ">
-        <h2 className="text-3xl md:text-4xl font-bold text-center">
+      <div className="bg-secondary text-white md:p-16 p-4 mb-20 mt-28 rounded-2xl ">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mt-5 md:mt-0">
           Our Services
         </h2>
         <p className="text-center mt-4 text-gray-300 md:px-32">
@@ -39,7 +39,6 @@ const OurServices = () => {
           ))}
         </div>
 
-        <div>{}</div>
       </div>
     </>
   );
