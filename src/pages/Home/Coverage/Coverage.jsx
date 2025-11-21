@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonPrimary from "../../../components/ButtonPrimary/ButtonPrimary";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const Coverage = () => {
+  const position = [24.181009000396962, 89.74686107027186];
+  const [serviceCenters, setServiceCenter] = useState([]);
+  useEffect(() => {
+    fetch("/serviceCenters.json")
+      .then((res) => res.json())
+      .then((data) => setServiceCenter(data));
+  }, []);
+
+  console.log(serviceCenters);
+
   return (
     <div className="my-8">
       {/* Container */}
@@ -25,6 +37,29 @@ const Coverage = () => {
         </div>
 
         {/* Map */}
+        <div>
+          <MapContainer
+            center={position}
+            zoom={7}
+            scrollWheelZoom={false}
+            className="h-[600px]"
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            {serviceCenters.map((center, idx) => (
+              <Marker key={idx} position={[center.latitude, center.longitude]}>
+                <Popup>
+                  <strong>{center.city}</strong>
+                  <br />
+                  {center.covered_area.join(", ")}
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
       </div>
     </div>
   );
