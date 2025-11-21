@@ -4,7 +4,18 @@ import Logo from "../../components/Logo/Logo";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const Navbar = () => {
-  const { user } = use(AuthContext);
+  const { user, logout } = use(AuthContext);
+
+  // Signout User
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        console.log("Logout Successfull");
+      })
+      .catch((error) => {
+        console.log(error.code);
+      });
+  };
 
   const links = (
     <>
@@ -71,9 +82,12 @@ const Navbar = () => {
         {/* End */}
         <div className="navbar-end pr-5">
           {user ? (
-            <div className="btn btn-primary text-black border-0 rounded-xl">
+            <button
+              onClick={handleLogout}
+              className="btn btn-primary text-black border-0 rounded-xl"
+            >
               Logout
-            </div>
+            </button>
           ) : (
             <Link to="/register">
               <div className="btn btn-primary text-black border-0 rounded-xl">
