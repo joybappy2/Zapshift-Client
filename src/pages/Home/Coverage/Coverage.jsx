@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import ButtonPrimary from "../../../components/ButtonPrimary/ButtonPrimary";
+import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 const Coverage = () => {
   const position = [24.181009000396962, 89.74686107027186];
+  const mapRef = useRef(null);
+
+  // Fetching Service Centers Data
   const [serviceCenters, setServiceCenter] = useState([]);
   useEffect(() => {
     fetch("/serviceCenters.json")
@@ -14,6 +16,23 @@ const Coverage = () => {
 
   console.log(serviceCenters);
 
+  // Search
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const searched = e.target.search.value;
+    const district = serviceCenters.find((center) =>
+      center.district
+        .toLowerCase()
+        .split(" ")
+        .join("")
+        .includes(searched.toLowerCase())
+    );
+    console.log(district);
+    if (district) {
+      const latlong = [district.latitude, district.longitude];
+      mapRef.current.flyTo(latlong, 14);
+    }
+  };
   return (
     <div className="my-8">
       {/* Container */}
@@ -23,11 +42,13 @@ const Coverage = () => {
         </h2>
 
         {/* Search */}
-        <div className="flex relative w-max">
-          <input className="input" type="text" name="" id="" />
-          <div className="absolute -right-2 z-20">
-            <ButtonPrimary text="Search" />
-          </div>
+        <div className="join">
+          <form onSubmit={handleSearch} className="flex">
+            <input type="text" className="input rounded-l-lg" name="search" />
+            <button className="btn btn-primary text-black font-bold join-item rounded-r-lg">
+              Search
+            </button>
+          </form>
         </div>
 
         <div>
@@ -39,9 +60,10 @@ const Coverage = () => {
         {/* Map */}
         <div>
           <MapContainer
+            ref={mapRef}
             center={position}
             zoom={7}
-            scrollWheelZoom={false}
+            scrollWheelZoom={true}
             className="h-[600px]"
           >
             <TileLayer
