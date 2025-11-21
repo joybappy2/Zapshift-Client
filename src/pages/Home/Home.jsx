@@ -1,12 +1,16 @@
-import React from "react";
+import React, { use } from "react";
 import Banner from "./Banner/Banner";
 import HowItWorks from "./HowItWorks/HowItWorks";
 import OurServices from "./OurServices/OurServices";
 import BrandsMarquee from "./BrandsMarquee/BrandsMarquee";
 import DeliveryFeatures from "./DeliveryFeatures/DeliveryFeatures";
 import Reviews from "./Reviews/Reviews";
+import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const Home = () => {
+  const { user } = use(AuthContext);
+  console.log(user);
+
   return (
     <div className="">
       {/* Banner */}

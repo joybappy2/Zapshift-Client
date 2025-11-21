@@ -1,7 +1,12 @@
-import React from "react";
+import React, { use } from "react";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const Register = () => {
+
+const {registerUser} = use(AuthContext)
+
+
   // React hook form property
   const {
     register,
@@ -12,6 +17,8 @@ const Register = () => {
   // Form Submit
   const handleRegister = (data) => {
     console.log(data);
+    registerUser(data.email, data.password)
+
   };
 
   return (

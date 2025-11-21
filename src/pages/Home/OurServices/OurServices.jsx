@@ -20,6 +20,7 @@ const OurServices = () => {
           {cards.map((card, idx) => (
             // Card
             <div
+              key={idx}
               className={`border p-14 text-center bg-base-100 text-black space-y-2 rounded-xl ${
                 idx === 1 && "bg-primary"
               }`}
@@ -38,7 +39,6 @@ const OurServices = () => {
             </div>
           ))}
         </div>
-
       </div>
     </>
   );

@@ -1,16 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { useForm } from "react-hook-form";
 
 const Coverage = () => {
   const position = [24.181009000396962, 89.74686107027186];
   const mapRef = useRef(null);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
   // Fetching Service Centers Data
   const [serviceCenters, setServiceCenter] = useState([]);
@@ -36,11 +30,6 @@ const Coverage = () => {
       const latlong = [district.latitude, district.longitude];
       mapRef.current.flyTo(latlong, 10);
     }
-  };
-
-  // Form Submit
-  const handleRegister = (data) => {
-    console.log(data);
   };
 
   return (
@@ -90,58 +79,6 @@ const Coverage = () => {
             </Marker>
           ))}
         </MapContainer>
-      </div>
-
-      {/* Form */}
-      <div className="mt-20 flex justify-center">
-        <form onSubmit={handleSubmit(handleRegister)} className="form w-sm">
-          <fieldset className="fieldset">
-            {/* Email */}
-            <label className="label">Email</label>
-            <input
-              type="email"
-              {...register("email", { required: true })}
-              className="input w-full"
-              placeholder="Email"
-            />
-            {errors.email?.type === "required" && (
-              <p className="text-red-500">Email Required</p>
-            )}
-
-            {/* Password */}
-            <label className="label">Password</label>
-            <input
-              type="password"
-              {...register("password", {
-                required: true,
-                minLength: 8,
-                pattern: /[A-Z]/,
-              })}
-              className="input w-full"
-              placeholder="Password"
-            />
-            {errors.password?.type === "required" && (
-              <p className="text-red-500">Password is required</p>
-            )}
-            {errors.password?.type === "minLength" && (
-              <p className="text-red-500">
-                Password length must be at least 8 character
-              </p>
-            )}
-            {errors.password?.type === "pattern" && (
-              <p className="text-red-500">
-                Password must have a uppercase letter
-              </p>
-            )}
-
-            <div>
-              <a className="link link-hover">Forgot password?</a>
-            </div>
-            <button className="btn btn-primary text-black font-bold mt-4">
-              Login
-            </button>
-          </fieldset>
-        </form>
       </div>
     </div>
   );

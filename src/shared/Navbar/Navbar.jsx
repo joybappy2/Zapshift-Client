@@ -1,8 +1,11 @@
-import React from "react";
-import { NavLink } from "react-router";
+import React, { use } from "react";
+import { Link, NavLink } from "react-router";
 import Logo from "../../components/Logo/Logo";
+import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const Navbar = () => {
+  const { user } = use(AuthContext);
+
   const links = (
     <>
       <li>
@@ -67,9 +70,17 @@ const Navbar = () => {
 
         {/* End */}
         <div className="navbar-end pr-5">
-          <a className="btn btn-primary text-black border-0 rounded-xl">
-            Button
-          </a>
+          {user ? (
+            <div className="btn btn-primary text-black border-0 rounded-xl">
+              Logout
+            </div>
+          ) : (
+            <Link to="/register">
+              <div className="btn btn-primary text-black border-0 rounded-xl">
+                Register
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </>
