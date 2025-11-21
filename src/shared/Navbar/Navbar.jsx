@@ -6,19 +6,19 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/">Services</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/">Services</NavLink>
+        <NavLink to="/about">About</NavLink>
       </li>
       <li>
-        <NavLink to="/">Services</NavLink>
+        <NavLink to="/services">Services</NavLink>
       </li>
       <li>
-        <NavLink to="/">Services</NavLink>
+        <NavLink to="/coverage">Coverage</NavLink>
       </li>
       <li>
-        <NavLink to="/">Services</NavLink>
+        <NavLink to="/contact-us">Contact Us</NavLink>
       </li>
     </>
   );
@@ -52,7 +52,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content rounded-box z-1 mt-6 w-52 p-2 shadow font-semibold backdrop-blur-sm"
             >
               {links}
             </ul>
@@ -62,7 +62,7 @@ const Navbar = () => {
 
         {/* Center */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{links}</ul>
+          <ul className="menu menu-horizontal px-1 font-semibold">{links}</ul>
         </div>
 
         {/* End */}

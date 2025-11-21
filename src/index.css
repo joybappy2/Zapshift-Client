@@ -21,3 +21,6 @@ body {
   background-color: #eaeced;
 }
 
+a.active{
+  @apply bg-primary rounded-xl 
+}

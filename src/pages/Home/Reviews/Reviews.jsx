@@ -39,12 +39,12 @@ const Reviews = () => {
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
-          depth: 100,
+          depth: 200,
           modifier: 1,
           slideShadows: true,
         }}
         autoplay={{
-          delay: 3000
+          delay: 2000,
         }}
         pagination={true}
         modules={[EffectCoverflow, Autoplay]}
@@ -56,12 +56,6 @@ const Reviews = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {/* <div>
-        {cards.map((card, idx) => (
-          <ReviewCard key={idx}></ReviewCard>
-        ))}
-      </div> */}
     </div>
   );
 };

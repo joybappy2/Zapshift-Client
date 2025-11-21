@@ -5,7 +5,7 @@ const ButtonPrimary = ({ text }) => {
   return (
     <>
       <div className="flex items-center">
-        <button className="btn btn-primary text-black text-lg font-bold rounded-2xl">
+        <button className="btn btn-primary text-black text-lg font-bold rounded-xl">
           {text}{" "}
         </button>
       </div>
