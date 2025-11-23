@@ -6,6 +6,8 @@ import AuthLayout from "../../layouts/AuthLayout/AuthLayout";
 import Register from "../../pages/Register/Register";
 import Revision from "../../pages/Revision";
 import Login from "../../pages/Login/Login";
+import BeARider from "../../pages/BeARider/BeARider";
+import PrivateRoute from "../PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "coverage",
         Component: Coverage,
+      },
+      {
+        path: "be-a-rider",
+        element: (
+          <PrivateRoute>
+            <BeARider />
+          </PrivateRoute>
+        ),
       },
     ],
   },

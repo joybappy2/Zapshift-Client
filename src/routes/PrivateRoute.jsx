@@ -6,11 +6,15 @@ const PrivateRoute = ({ children }) => {
   const { user, loadingUser } = use(AuthContext);
 
   if (loadingUser) {
-    return <span className="loading-dots loading-xl text-primary"></span>;
+    return (
+      <div className="min-h-[calc(100vh-400px)] flex justify-center items-center">
+        <span className="loading loading-bars loading-xl text-[#caeb66]"></span>
+      </div>
+    );
   }
 
   if (!user) {
-    return Navigate("/login");
+    return <Navigate to="/login"></Navigate>;
   }
 
   return children;

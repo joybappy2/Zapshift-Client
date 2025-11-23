@@ -20,7 +20,7 @@ const Coverage = () => {
     const searched = e.target.search.value;
     const district = serviceCenters.find((center) =>
       center.district
-        .toLowerCase()
+        ?.toLowerCase()
         .split(" ")
         .join("")
         .includes(searched.toLowerCase())
