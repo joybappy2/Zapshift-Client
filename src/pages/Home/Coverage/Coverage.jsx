@@ -74,7 +74,7 @@ const Coverage = () => {
               <Popup>
                 <strong>{center.city}</strong>
                 <br />
-                {center.covered_area.join(", ")}
+                {center.covered_area?.join(", ")}
               </Popup>
             </Marker>
           ))}
