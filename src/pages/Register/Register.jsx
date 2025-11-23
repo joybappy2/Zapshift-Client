@@ -1,10 +1,11 @@
-import React, { use } from "react";
+import { use } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { updateProfile } from "firebase/auth";
-import { FaArrowUp, FaRegUserCircle } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
 import { HiUserCircle } from "react-icons/hi";
+import axios from "axios";
 
 const Register = () => {
   const { registerUser } = use(AuthContext);
@@ -19,25 +20,44 @@ const Register = () => {
 
   // Form Submit
   const handleRegister = (data) => {
-    console.log(data);
-    registerUser(data.email, data.password)
+    const name = data.name;
+    const email = data.email;
+    const password = data.password;
+    const imageFile = data.image[0];
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    axios
+      .post(
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMAGEHOSTAPIKEY
+        }`,
+        formData
+      )
       .then((res) => {
-        console.log(res.user);
-        console.log("registration successful");
-        updateProfile(res.user, {
-          displayName: data.name,
-          photoURL: data.photoURL,
-        })
-          .then(() => {
-            console.log("Profile Updated");
-            navigate("/");
+        const image_url = res.data.data.display_url;
+        registerUser(email, password)
+          .then((res) => {
+            console.log(res.user);
+            console.log("registration successful");
+            updateProfile(res.user, {
+              displayName: name,
+              photoURL: image_url,
+            })
+              .then(() => {
+                console.log("Profile Updated");
+                navigate("/");
+              })
+              .catch((errors) => {
+                console.log(errors);
+              });
           })
-          .catch((errors) => {
-            console.log(errors);
+          .catch((error) => {
+            console.log(error.code);
           });
       })
-      .catch((error) => {
-        console.log(error.code);
+      .catch((errors) => {
+        console.log(errors);
       });
   };
 
@@ -71,13 +91,13 @@ const Register = () => {
             )}
 
             {/* Photo */}
-            <label className="label">Photo</label>
+            {/* <label className="label">Photo</label>
             <input
               type="text"
               {...register("photoURL")}
               className="input w-full"
               placeholder="Photo URL"
-            />
+            /> */}
 
             {/* Email */}
             <label className="label">Email</label>
@@ -115,6 +135,19 @@ const Register = () => {
               <p className="text-red-500">
                 Password must have a uppercase letter
               </p>
+            )}
+
+            {/* Photo */}
+            <label className="label">Upload A Photo</label>
+            <input
+              type="file"
+              className="file-input w-full"
+              name=""
+              id=""
+              {...register("image", { required: true })}
+            />
+            {errors.image?.type === "required" && (
+              <p className="text-red-500">Image is required</p>
             )}
 
             <div>

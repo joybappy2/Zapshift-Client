@@ -9,7 +9,12 @@ import ButtonPrimary from "../../../components/ButtonPrimary/ButtonPrimary";
 
 const Banner = () => {
   return (
-    <Carousel autoPlay={true} infiniteLoop={true} interval={2000}>
+    <Carousel
+      autoPlay={true}
+      infiniteLoop={true}
+      interval={2000}
+      stopOnHover={false}
+    >
       {/* Banner 1 */}
       <div className="relative">
         <img src={bannerImg1} />

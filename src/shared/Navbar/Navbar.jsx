@@ -100,7 +100,7 @@ const Navbar = () => {
               {/* Profile */}
               <div>
                 <img
-                  className="h-10 w-10 rounded-full"
+                  className="h-10 w-10 rounded-full object-cover"
                   src={user?.photoURL}
                   alt="user avatar"
                 />

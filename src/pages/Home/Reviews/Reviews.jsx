@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import customerTopImg from "../../../assets/customer-top.png";
 import ReviewCard from "./ReviewCard";
 import "swiper/css";
@@ -46,7 +46,6 @@ const Reviews = () => {
         autoplay={{
           delay: 2000,
         }}
-        pagination={true}
         modules={[EffectCoverflow, Autoplay]}
         className="mySwiper mt-10"
       >
