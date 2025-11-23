@@ -1,11 +1,12 @@
 import React, { use } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const Login = () => {
   const { loginUser } = use(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -19,7 +20,7 @@ const Login = () => {
     loginUser(email, password)
       .then(() => {
         console.log("Login Successful");
-        navigate("/");
+        location.state ? navigate(location?.state) : navigate("/");
       })
       .catch((errors) => {
         console.log(errors.code);
