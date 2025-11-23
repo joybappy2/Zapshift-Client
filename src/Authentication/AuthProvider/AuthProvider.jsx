@@ -3,6 +3,7 @@ import { AuthContext } from "../AuthContext/AuthContext";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebase.init";
@@ -32,11 +33,18 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  // Login User with EP
+  const loginUser = (email, password) => {
+    setLoadingUser(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
   //   Values of auth context
   const authInfo = {
     user,
     loadingUser,
     registerUser,
+    loginUser,
     logout,
   };
 

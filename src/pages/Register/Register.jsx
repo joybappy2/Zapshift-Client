@@ -1,7 +1,7 @@
 import React, { use } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { updateProfile } from "firebase/auth";
 import { FaArrowUp, FaRegUserCircle } from "react-icons/fa";
 import { HiUserCircle } from "react-icons/hi";
@@ -97,7 +97,7 @@ const Register = () => {
               type="password"
               {...register("password", {
                 required: true,
-                minLength: 8,
+                minLength: 6,
                 pattern: /[A-Z]/,
               })}
               className="input w-full"
@@ -118,10 +118,19 @@ const Register = () => {
             )}
 
             <div>
-              <a className="link link-hover">Forgot password?</a>
+              <p className="font-semibold">
+                Already have an account?
+                <Link
+                  className="link link-hover text-lime-400 hover:text-lime-500"
+                  to="/login"
+                >
+                  {" "}
+                  Login
+                </Link>
+              </p>
             </div>
             <button className="btn btn-primary text-black font-bold mt-4">
-              Login
+              Register
             </button>
           </fieldset>
         </form>

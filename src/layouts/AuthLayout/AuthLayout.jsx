@@ -5,15 +5,15 @@ import authImg from "../../assets/authImage.png";
 
 const AuthLayout = () => {
   return (
-    <div className=" relative">
+    <div className=" relative bg-white">
       <div className="absolute md:top-10 md:left-10">
         <Logo />
       </div>
 
       <div className="flex-col-reverse flex md:flex-row min-h-screen">
         {/* Form */}
-        <div className=" md:flex-1 flex justify-center items-center">
-          <div className="absolute mb-[600px] md:mb-0">
+        <div className="md:flex-1 flex justify-center items-center">
+          <div className="absolute mb-[400px] md:mb-0">
             <Outlet></Outlet>
           </div>
         </div>

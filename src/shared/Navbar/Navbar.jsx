@@ -82,12 +82,23 @@ const Navbar = () => {
         {/* End */}
         <div className="navbar-end pr-5">
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="btn btn-primary text-black border-0 rounded-xl"
-            >
-              Logout
-            </button>
+            <div className="flex gap-2 items-center flex-row-reverse">
+              <button
+                onClick={handleLogout}
+                className="btn btn-primary text-black border-0 rounded-xl"
+              >
+                Logout
+              </button>
+
+              {/* Profile */}
+              <div>
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={user?.photoURL}
+                  alt="user avatar"
+                />
+              </div>
+            </div>
           ) : (
             <Link to="/register">
               <div className="btn btn-primary text-black border-0 rounded-xl">

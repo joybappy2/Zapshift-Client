@@ -8,7 +8,7 @@ import start_people from "../../../assets/brands/start_people.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import { Autoplay, } from "swiper/modules";
 
 const BrandsMarquee = () => {
   const brandsLogos = [amazon, casio, moonstar, randstad, star, start_people];
