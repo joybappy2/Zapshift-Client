@@ -37,6 +37,27 @@ const SendAParcel = () => {
   // Handle Parcel Booking Button
   const handleParcelBooking = (data) => {
     console.log(data);
+    const isDocument = data.parcelType === "document" ? true : false;
+    const isSameCity = data.senderRegion === data.receiverRegion ? true : false;
+    const parcelWeight = parseFloat(data.parcelWeight);
+    console.log(isSameCity);
+
+    let cost = 0;
+
+    // if parcelType === document
+    if (isDocument) {
+      cost = isSameCity ? 60 : 80;
+    }
+    // If Not Document
+    else if (parcelWeight <= 3 && parcelWeight > 0) {
+      cost = isSameCity ? 110 : 150;
+    }
+    // if weight more than 3 kg
+    else if (parcelWeight > 3) {
+      cost = isSameCity ? parcelWeight * 40 : parcelWeight * 40 + 40;
+    }
+
+    console.log(cost);
   };
 
   return (
@@ -80,18 +101,25 @@ const SendAParcel = () => {
 
             {/*  Parcel Name / Weight  */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <input
-                type="text"
-                placeholder="Parcel Name"
-                className="input input-bordered w-full"
-                {...register("parcelName")}
-              />
-              <input
-                type="text"
-                placeholder="Parcel Weight (KG)"
-                className="input input-bordered w-full"
-                {...register("parcelWeight")}
-              />
+              <div>
+                <label>Parcel Name</label>
+                <input
+                  type="text"
+                  placeholder="Parcel Name"
+                  className="input input-bordered w-full"
+                  {...register("parcelName")}
+                />
+              </div>
+
+              <div>
+                <label>Weight (KG)</label>
+                <input
+                  type="text"
+                  placeholder="Parcel Weight (KG)"
+                  className="input input-bordered w-full"
+                  {...register("parcelWeight")}
+                />
+              </div>
             </div>
 
             {/* Sender + Receiver Details  */}
@@ -186,7 +214,7 @@ const SendAParcel = () => {
                     className="select select-bordered w-full"
                     {...register("receiverRegion")}
                   >
-                    <option disabled>Select your District</option>
+                    <option>Select your District</option>
                     {regions?.map((region, idx) => (
                       <option key={idx} value={region}>
                         {region}
