@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import useAxios from "../../hooks/useAxios";
+import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const SendAParcel = () => {
   const { register, handleSubmit, watch } = useForm();
   const [serviceCenters, setServiceCenter] = useState([]);
+  const axiosSecure = useAxios();
+  const { user } = use(AuthContext);
 
   // Fething Service Centers
   useEffect(() => {
@@ -38,7 +43,9 @@ const SendAParcel = () => {
   const handleParcelBooking = (data) => {
     console.log(data);
     const isDocument = data.parcelType === "document" ? true : false;
-    const isSameCity = data.senderRegion === data.receiverRegion ? true : false;
+    const isSameCity =
+      data.senderDistrict === data.receiverDistrict ? true : false;
+    console.log(isSameCity);
     const parcelWeight = parseFloat(data.parcelWeight);
     console.log(isSameCity);
 
@@ -56,6 +63,28 @@ const SendAParcel = () => {
     else if (parcelWeight > 3) {
       cost = isSameCity ? parcelWeight * 40 : parcelWeight * 40 + 40;
     }
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You have to pay ৳ ${cost}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Confirm",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("data after saving to db", res.data);
+        });
+
+        // Swal.fire({
+        //   title: "Parcel Confirmed",
+        //   text: "",
+        //   icon: "success",
+        // });
+      }
+    });
 
     console.log(cost);
   };
@@ -130,11 +159,20 @@ const SendAParcel = () => {
 
                 <div className="flex flex-col gap-4">
                   <input
+                    defaultValue={user?.displayName}
                     type="text"
                     placeholder="Sender Name"
                     className="input input-bordered w-full"
                     {...register("senderName")}
                   />
+                  <input
+                    defaultValue={user?.email}
+                    type="text"
+                    placeholder="Sender Email"
+                    className="input input-bordered w-full"
+                    {...register("senderEmail")}
+                  />
+
                   <input
                     type="text"
                     placeholder="Address"
@@ -154,7 +192,7 @@ const SendAParcel = () => {
                   "
                     {...register("senderRegion")}
                   >
-                    <option>Select your region</option>
+                    <option value="">Select your Region</option>
 
                     {regions?.map((region, idx) => (
                       <option key={idx} value={region}>
@@ -169,7 +207,7 @@ const SendAParcel = () => {
                   "
                     {...register("senderDistrict")}
                   >
-                    <option>Select your District</option>
+                    <option value="">Select your District</option>
 
                     {senderDistricts?.map((distritc, idx) => (
                       <option key={idx} value={distritc}>
@@ -196,6 +234,14 @@ const SendAParcel = () => {
                     className="input input-bordered w-full"
                     {...register("receiverName")}
                   />
+
+                  <input
+                    type="text"
+                    placeholder="Receiver Email"
+                    className="input input-bordered w-full"
+                    {...register("receiverEmail")}
+                  />
+
                   <input
                     type="text"
                     placeholder="Address"
@@ -214,7 +260,7 @@ const SendAParcel = () => {
                     className="select select-bordered w-full"
                     {...register("receiverRegion")}
                   >
-                    <option>Select your District</option>
+                    <option value="">Select your Region</option>
                     {regions?.map((region, idx) => (
                       <option key={idx} value={region}>
                         {region}
@@ -227,7 +273,7 @@ const SendAParcel = () => {
                     className="select select-bordered w-full"
                     {...register("receiverDistrict")}
                   >
-                    <option>Select your District</option>
+                    <option value="">Select your District</option>
                     {receiverDistricts?.map((district, idx) => (
                       <option key={idx} value={district}>
                         {district}
