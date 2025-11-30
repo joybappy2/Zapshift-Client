@@ -9,7 +9,7 @@ import axios from "axios";
 
 const Register = () => {
   const { registerUser } = use(AuthContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   // React hook form property
   const {

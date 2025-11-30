@@ -5,7 +5,7 @@ import useAxios from "../../hooks/useAxios";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const SendAParcel = () => {
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch, reset } = useForm();
   const [serviceCenters, setServiceCenter] = useState([]);
   const axiosSecure = useAxios();
   const { user } = use(AuthContext);
@@ -42,6 +42,7 @@ const SendAParcel = () => {
   // Handle Parcel Booking Button
   const handleParcelBooking = (data) => {
     console.log(data);
+    data.parcelWeight = parseFloat(data.parcelWeight);
     const isDocument = data.parcelType === "document" ? true : false;
     const isSameCity =
       data.senderDistrict === data.receiverDistrict ? true : false;
@@ -63,6 +64,7 @@ const SendAParcel = () => {
     else if (parcelWeight > 3) {
       cost = isSameCity ? parcelWeight * 40 : parcelWeight * 40 + 40;
     }
+    data.parcelPrice = parseFloat(cost);
 
     Swal.fire({
       title: "Are you sure?",
@@ -75,14 +77,14 @@ const SendAParcel = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.post("/parcels", data).then((res) => {
+          reset()
           console.log("data after saving to db", res.data);
+          Swal.fire({
+            title: "Parcel Confirmed",
+            text: "",
+            icon: "success",
+          });
         });
-
-        // Swal.fire({
-        //   title: "Parcel Confirmed",
-        //   text: "",
-        //   icon: "success",
-        // });
       }
     });
 

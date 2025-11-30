@@ -1,0 +1,107 @@
+import { use } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from "../../../Authentication/AuthContext/AuthContext";
+import useAxios from "../../../hooks/useAxios";
+import { FiTruck } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
+const MyParcels = () => {
+  const { user } = use(AuthContext);
+  const axiosSecure = useAxios();
+  // const { isPending, data } = useQuery({
+  //   queryKey: ["my-parcels", user?.email],
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get(`/my-parcels?email=${user.email}`);
+  //     return res.data;
+  //   },
+  // });
+
+  const { data } = useQuery({
+    queryKey: ["my-parcels", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `http://localhost:3000/my-parcels?email=${user?.email}`
+      );
+      return res.data;
+    },
+  });
+
+  console.log(data);
+
+  return (
+    <div className="bg-base-100 md:p-10 p-4 rounded-2xl">
+      <h2 className="text-3xl md:text-4xl font-bold mb-5">All My Parcels</h2>
+
+      {/* total card */}
+      <div className="w-48 bg-gray-100 rounded-2xl p-4 shadow-sm flex items-center gap-4 mb-5">
+        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow">
+          <FiTruck className="text-gray-600 text-xl" />
+        </div>
+
+        <div>
+          <p className="text-gray-500 text-sm">Total</p>
+          <p className="text-2xl font-semibold text-gray-900">{data?.length}</p>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-xl shadow w-full">
+        <table className="w-full text-left">
+          {/* === TABLE HEADER === */}
+          <thead>
+            <tr className=" text-gray-700 bg-gray-300">
+              <th className="px-4 py-3">Parcel ID</th>
+              <th className="px-4 py-3">Amount</th>
+              <th className="px-4 py-3">Payment Status</th>
+              <th className="px-4 py-3">Action</th>
+            </tr>
+          </thead>
+
+          {/* === TABLE BODY (ONE ROW) === */}
+          <tbody>
+            {data?.map((parcel) => (
+              <tr className="border-b border-gray-200 hover:bg-gray-50 transition">
+                {/* Cons ID */}
+                <td className="px-4 py-4 text-sm text-gray-700 font-medium">
+                  #{parcel._id}
+                </td>
+
+                {/* Amount */}
+                <td className="px-4 py-4 text-sm text-gray-600">
+                  <p>৳ {parcel.parcelPrice}</p>
+                </td>
+
+                {/* Payment */}
+                <td className="px-4 py-4 text-sm font-medium text-green-600">
+                  pending
+                </td>
+
+                {/* Action */}
+                <td className="px-4 py-4 text-sm">
+                  <div className="flex gap-2">
+                    {/* Pay Button */}
+                    <button className="bg-lime-400 text-black px-4 py-1 rounded-md text-sm font-medium">
+                      Pay
+                    </button>
+
+                    {/* View Button */}
+                    <button className="flex items-center gap-1 bg-gray-200 text-gray-800 px-4 py-1 rounded-md text-sm font-medium">
+                      <FiEye size={16} /> View
+                    </button>
+
+                    {/* Delete Button */}
+                    <button className="flex items-center gap-1 bg-red-100 text-red-600 px-4 py-1 rounded-md text-sm font-medium">
+                      <RiDeleteBin6Line size={16} /> Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default MyParcels;
