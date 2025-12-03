@@ -3,12 +3,14 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
+import { useNavigate } from "react-router";
 
 const SendAParcel = () => {
   const { register, handleSubmit, watch, reset } = useForm();
   const [serviceCenters, setServiceCenter] = useState([]);
   const axiosSecure = useAxios();
   const { user } = use(AuthContext);
+  const navigate = useNavigate()
 
   // Fething Service Centers
   useEffect(() => {
@@ -65,6 +67,7 @@ const SendAParcel = () => {
       cost = isSameCity ? parcelWeight * 40 : parcelWeight * 40 + 40;
     }
     data.parcelPrice = parseFloat(cost);
+    data.paymentStatus = "unpaid";
 
     Swal.fire({
       title: "Are you sure?",
@@ -77,10 +80,13 @@ const SendAParcel = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosSecure.post("/parcels", data).then((res) => {
-          reset()
+          reset();
+          navigate('/dashboard/my-parcels')
           console.log("data after saving to db", res.data);
           Swal.fire({
             title: "Parcel Confirmed",
+            confirmButtonText: 'Continue to Pay',
+            confirmButtonColor: "#b7d55f",
             text: "",
             icon: "success",
           });
