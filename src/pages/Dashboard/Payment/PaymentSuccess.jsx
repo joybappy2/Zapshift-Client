@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useSearchParams } from "react-router";
 import useAxios from "../../../hooks/useAxios";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
+  const [paymentInfo, setPaymentInfo] = useState({});
   const sessionId = searchParams.get("session_id");
   const axiosSecure = useAxios();
   console.log(sessionId);
@@ -12,6 +13,12 @@ const PaymentSuccess = () => {
   useEffect(() => {
     axiosSecure.patch(`/verify-payment?session_id=${sessionId}`).then((res) => {
       console.log(res.data);
+      if (res.data.message) {
+        setPaymentInfo({
+          transactionId: res.data.transactionId,
+          trackingId: res.data.trackingId,
+        });
+      }
     });
   }, [sessionId, axiosSecure]);
 
@@ -87,6 +94,9 @@ const PaymentSuccess = () => {
           <h2 className="text-2xl font-medium text-slate-800 tracking-wide">
             Successful
           </h2>
+
+          <h2>Tracking ID: {paymentInfo.trackingId}</h2>
+          <h2>Transaction ID: {paymentInfo.transactionId}</h2>
         </div>
       </div>
     </div>

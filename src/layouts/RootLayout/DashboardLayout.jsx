@@ -1,9 +1,10 @@
 import Logo from "../../components/Logo/Logo";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import { FaBoxOpen } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { use } from "react";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
+import { MdOutlinePayments } from "react-icons/md";
 
 const DashboardLayout = () => {
   const { user } = use(AuthContext);
@@ -59,8 +60,8 @@ const DashboardLayout = () => {
           <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
             {/* Sidebar content here */}
             <ul className="menu w-full grow space-y-2">
-              {/* List item */}
-              <NavLink to="/dashboard">
+              {/* Dashboard home */}
+              <Link to="/dashboard">
                 <li>
                   <button
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -70,8 +71,9 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">Dashboard</span>
                   </button>
                 </li>
-              </NavLink>
+              </Link>
 
+              {/* My Parcel */}
               <NavLink to="/dashboard/my-parcels">
                 <li>
                   <button
@@ -82,6 +84,26 @@ const DashboardLayout = () => {
                     <FaBoxOpen className="text-lg" />
 
                     <span className="is-drawer-close:hidden">My Parcels</span>
+                  </button>
+                </li>
+              </NavLink>
+
+              {/* payment history */}
+              <NavLink to="/dashboard/payment-history">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Payment History"
+                  >
+                    {/* Pay icon */}
+                    <MdOutlinePayments
+                      className="text-lg
+                    "
+                    />
+
+                    <span className="is-drawer-close:hidden">
+                      Payment History
+                    </span>
                   </button>
                 </li>
               </NavLink>

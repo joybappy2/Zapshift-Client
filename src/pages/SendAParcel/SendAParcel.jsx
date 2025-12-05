@@ -6,11 +6,11 @@ import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 import { useNavigate } from "react-router";
 
 const SendAParcel = () => {
-  const { register, handleSubmit, watch, reset } = useForm();
+  const { register, handleSubmit, reset, watch } = useForm();
   const [serviceCenters, setServiceCenter] = useState([]);
   const axiosSecure = useAxios();
   const { user } = use(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Fething Service Centers
   useEffect(() => {
@@ -81,14 +81,18 @@ const SendAParcel = () => {
       if (result.isConfirmed) {
         axiosSecure.post("/parcels", data).then((res) => {
           reset();
-          navigate('/dashboard/my-parcels')
+
           console.log("data after saving to db", res.data);
           Swal.fire({
             title: "Parcel Confirmed",
-            confirmButtonText: 'Continue to Pay',
+            confirmButtonText: "Continue to Pay",
             confirmButtonColor: "#b7d55f",
             text: "",
             icon: "success",
+          }).then((reslult) => {
+            if (reslult.isConfirmed) {
+              navigate("/dashboard/my-parcels");
+            }
           });
         });
       }

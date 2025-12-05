@@ -6,10 +6,12 @@ import { updateProfile } from "firebase/auth";
 import { FaArrowUp } from "react-icons/fa";
 import { HiUserCircle } from "react-icons/hi";
 import axios from "axios";
+import useAxios from "../../hooks/useAxios";
 
 const Register = () => {
   const { registerUser } = use(AuthContext);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const axiosSecure = useAxios();
 
   // React hook form property
   const {
@@ -46,6 +48,17 @@ const Register = () => {
             })
               .then(() => {
                 console.log("Profile Updated");
+
+                const newUser = {
+                  displayName: res.user.displayName,
+                  photoURL: res.user.photoURL,
+                  email: res.user.email,
+                };
+                // saving user to db
+                axiosSecure.post("/users", newUser).then((res) => {
+                  console.log(res.data);
+                });
+
                 navigate("/");
               })
               .catch((errors) => {
