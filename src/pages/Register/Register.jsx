@@ -3,15 +3,17 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { updateProfile } from "firebase/auth";
-import { FaArrowUp } from "react-icons/fa";
+import { FaArrowUp, FaFan } from "react-icons/fa";
 import { HiUserCircle } from "react-icons/hi";
 import axios from "axios";
 import useAxios from "../../hooks/useAxios";
 
 const Register = () => {
-  const { registerUser } = use(AuthContext);
+  const { registerUser, loadingUser } = use(AuthContext);
   const navigate = useNavigate();
   const axiosSecure = useAxios();
+
+  console.log("clicked");
 
   // React hook form property
   const {
@@ -176,7 +178,13 @@ const Register = () => {
               </p>
             </div>
             <button className="btn btn-primary text-black font-bold mt-4">
-              Register
+              {loadingUser ? (
+                <span className="animate-spin">
+                  <FaFan size={80} />
+                </span>
+              ) : (
+                "Register"
+              )}
             </button>
           </fieldset>
         </form>
