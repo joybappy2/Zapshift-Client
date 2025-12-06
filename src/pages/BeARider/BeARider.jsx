@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import agentImg from "../../assets/agent-pending.png";
 import { useForm } from "react-hook-form";
+import useAxios from "../../hooks/useAxios";
+import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 
 const BeARider = () => {
   const { register, handleSubmit, watch } = useForm();
   const [warehouses, setWarehouses] = useState([]);
+  const axiosSecure = useAxios();
+  const { user } = use(AuthContext);
+
   useEffect(() => {
     fetch("/warehouses.json")
       .then((res) => res.json())
@@ -28,8 +33,14 @@ const BeARider = () => {
   const riderFormSubmit = (data) => {
     const age = parseInt(data.age);
     data.age = age;
-    console.log("selected ", selectedDistrict);
+
     console.log(data);
+
+    axiosSecure.post("/riders", data).then((res) => {
+      if (res.data?.insertedId) {
+        alert("Request Sent! \nWait for Confirmation");
+      }
+    });
   };
 
   return (
@@ -56,10 +67,11 @@ const BeARider = () => {
                   Your Name
                 </label>
                 <input
-                  {...register("name")}
+                  defaultValue={user?.displayName}
                   type="text"
                   placeholder="Your Name"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg transition duration-150 ease-in-out placeholder-gray-400 focus:outline-none  focus:ring-1 focus:ring-primary"
+                  {...register("name")}
                 />
               </div>
               <div>
@@ -83,6 +95,7 @@ const BeARider = () => {
                 </label>
                 <input
                   {...register("email")}
+                  defaultValue={user?.email}
                   type="email"
                   placeholder="Your Email"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg transition duration-150 ease-in-out placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary"
