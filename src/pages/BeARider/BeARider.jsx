@@ -112,7 +112,7 @@ const BeARider = () => {
                 <div className="relative">
                   {/* Select field with static options */}
                   <select
-                    {...register("district")}
+                    {...register("region")}
                     defaultValue=""
                     className="w-full select select-bordered transition duration-150 ease-in-out placeholder-gray-400   cursor-pointer"
                   >
@@ -120,9 +120,9 @@ const BeARider = () => {
                       Select your District
                     </option>
 
-                    {uniqueRegions?.map((d, idx) => (
-                      <option key={idx} value={d}>
-                        {d}
+                    {uniqueRegions?.map((r, idx) => (
+                      <option key={idx} value={r}>
+                        {r}
                       </option>
                     ))}
                   </select>

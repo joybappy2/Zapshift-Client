@@ -72,7 +72,7 @@ const RidersApplications = () => {
             <tr className="bg-gray-200">
               <th></th>
               <th>Name</th>
-              <th>District</th>
+              <th>Region</th>
               <th>Warehouse</th>
               <th>Approval</th>
               <th>Actions</th>
@@ -84,7 +84,7 @@ const RidersApplications = () => {
               <tr key={r._id} className="hover:bg-gray-100 font-semibold">
                 <th>{idx + 1}</th>
                 <td>{r.name}</td>
-                <td>{r.district}</td>
+                <td>{r.region}</td>
                 <td>{r.warehouse}</td>
                 <td>
                   <span
@@ -106,7 +106,7 @@ const RidersApplications = () => {
                   <button
                     onClick={() => handleRiderRequest(r, "approved")}
                     className={`btn btn-sm btn-success text-white ${
-                      r.status === "approved" && "hidden"
+                      r.approval === "approved" && "hidden"
                     }`}
                   >
                     Accept
@@ -114,7 +114,7 @@ const RidersApplications = () => {
                   <button
                     onClick={() => handleRiderRequest(r, "rejected")}
                     className={`btn btn-sm btn-error text-white ${
-                      r.status === "approved" && "hidden"
+                      r.approval === "approved" && "hidden"
                     }`}
                   >
                     Reject

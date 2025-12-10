@@ -6,9 +6,14 @@ import { useRef, useState } from "react";
 const AssignRiders = () => {
   const findRiderModalRef = useRef();
   const [selectedParcelRegion, setSelectedParcelRegion] = useState("");
+  const [selectedParcel, setSelectedParcel] = useState({});
 
   const axiosSecure = useAxios();
-  const { data: parcels = [], isLoading } = useQuery({
+  const {
+    data: parcels = [],
+    refetch: parcelRefetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["parcels", "pending-pickup"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -19,22 +24,41 @@ const AssignRiders = () => {
   });
 
   const { data: riders = [], isLoading: riderLoading } = useQuery({
-    queryKey: [],
+    queryKey: ["riders", "workingStatus"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/riders?approval=approved`);
+      const res = await axiosSecure.get(
+        `/riders?approval=approved&workingStatus=available`
+      );
       return res.data;
     },
   });
 
-  console.log(riders);
+  console.log(parcels);
 
   //   console.log(parcels);
 
   const openFindRiderModal = (parcel) => {
     setSelectedParcelRegion(parcel.senderRegion);
+    setSelectedParcel(parcel);
     findRiderModalRef.current.showModal();
   };
 
+  const handleAssignParcel = (rider) => {
+    const riderInfo = {
+      parcelId: selectedParcel._id,
+      riderId: rider._id,
+      riderName: rider.name,
+    };
+
+    axiosSecure
+      .patch(`/parcel/${selectedParcel._id}`, riderInfo)
+      .then((res) => {
+        if (res.data.modifiedCount) {
+          parcelRefetch();
+          alert("parcel delivery status updated");
+        }
+      });
+  };
   return (
     <div className="bg-base-100 md:p-10 p-4 rounded-2xl">
       <h2 className="text-3xl md:text-4xl font-bold mb-5">Assign Riders</h2>
@@ -61,6 +85,7 @@ const AssignRiders = () => {
               <th>#</th>
               <th>Parcel Name</th>
               <th>Pickup Region</th>
+              <th>Delivery Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -80,6 +105,16 @@ const AssignRiders = () => {
                   <th>{idx + 1}</th>
                   <td>{parcel.parcelName}</td>
                   <td>{parcel.senderRegion}</td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        parcel.deliveryStatus === "pending-pickup" &&
+                        "badge-warning text-black"
+                      }`}
+                    >
+                      {parcel.deliveryStatus}
+                    </span>
+                  </td>
 
                   <td>
                     <button
@@ -103,7 +138,10 @@ const AssignRiders = () => {
       >
         <div className="modal-box max-h-screen overflow-hidden max-w-4xl">
           <h3 className="font-bold text-lg mb-4">
-            Pickup District...{selectedParcelRegion}
+            Sender Region...
+            <span className="text-2xl text-orange-500">
+              {selectedParcelRegion}
+            </span>
           </h3>
           <div className="overflow-x-auto">
             <table className="table table-zebra">
@@ -113,7 +151,7 @@ const AssignRiders = () => {
                   <th>#</th>
                   <th>Rider Name</th>
                   <th>Working Status</th>
-                  <th>Rider District</th>
+                  <th>Rider Region</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -143,9 +181,12 @@ const AssignRiders = () => {
                           {rider.workingStatus}
                         </span>
                       </td>
-                      <td>{rider.district}</td>
+                      <td>{rider.region}</td>
                       <td>
-                        <button className="btn btn-primary text-black btn-sm">
+                        <button
+                          onClick={() => handleAssignParcel(rider)}
+                          className="btn btn-primary text-black btn-sm"
+                        >
                           Assign Rider
                         </button>
                       </td>
