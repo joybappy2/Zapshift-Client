@@ -1,13 +1,21 @@
 import Logo from "../../components/Logo/Logo";
 import { Link, NavLink, Outlet } from "react-router";
-import { FaBoxOpen } from "react-icons/fa";
-import { IoMdHome } from "react-icons/io";
+import { FaBoxOpen, FaUsers } from "react-icons/fa";
+import { IoIosAddCircle, IoMdAdd, IoMdHome } from "react-icons/io";
 import { use } from "react";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 import { MdOutlinePayments } from "react-icons/md";
+import { RiEBike2Fill } from "react-icons/ri";
+import useRole from "../../hooks/useRole";
 
 const DashboardLayout = () => {
   const { user } = use(AuthContext);
+
+  const { role, roleLoading } = useRole();
+
+  if (roleLoading) {
+    return;
+  }
 
   return (
     <div>
@@ -107,6 +115,61 @@ const DashboardLayout = () => {
                   </button>
                 </li>
               </NavLink>
+
+              {role.role === "admin" && (
+                <>
+                  {/* Riders Application */}
+                  <NavLink to="/dashboard/riders-application">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="Riders Application"
+                      >
+                        {/* Pay icon */}
+                        <RiEBike2Fill className="text-lg" />
+
+                        <span className="is-drawer-close:hidden">
+                          Riders Application
+                        </span>
+                      </button>
+                    </li>
+                  </NavLink>
+
+                  {/* Manage Users */}
+                  <NavLink to="/dashboard/manage-users">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="Manage Users"
+                      >
+                        {/* Pay icon */}
+                        <FaUsers className="text-lg"></FaUsers>
+
+                        <span className="is-drawer-close:hidden">
+                          Manage Users
+                        </span>
+                      </button>
+                    </li>
+                  </NavLink>
+
+                  
+              {/* assign riders */}
+              <NavLink to="/dashboard/assign-riders">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assign Riders"
+                  >
+                    {/* Pay icon */}
+                    <IoMdAdd className="text-lg" />
+                    <span className="is-drawer-close:hidden">
+                      Assign Riders
+                    </span>
+                  </button>
+                </li>
+              </NavLink>
+                </>
+              )}
             </ul>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { use } from "react";
 import { AuthContext } from "../Authentication/AuthContext/AuthContext";
 import { Navigate, useLocation } from "react-router";
+import { FaFan } from "react-icons/fa";
 
 const PrivateRoute = ({ children }) => {
   const { user, loadingUser } = use(AuthContext);
@@ -9,8 +10,10 @@ const PrivateRoute = ({ children }) => {
 
   if (loadingUser) {
     return (
-      <div className="min-h-[calc(100vh-400px)] flex justify-center items-center">
-        <span className="loading loading-bars loading-xl text-[#caeb66]"></span>
+      <div>
+        <div className="min-h-screen flex justify-center items-center">
+          <FaFan size={100} className="animate-spin text-primary"></FaFan>
+        </div>
       </div>
     );
   }

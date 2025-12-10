@@ -28,8 +28,6 @@ const MyParcels = () => {
     },
   });
 
-  console.log(data);
-
   if (isPending) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -37,6 +35,7 @@ const MyParcels = () => {
       </div>
     );
   }
+  console.log(data);
 
   const handleDelete = (id) => {
     console.log(id);
@@ -83,7 +82,7 @@ const MyParcels = () => {
 
   return (
     <div className="bg-base-100 md:p-10 p-4 rounded-2xl">
-      <h2 className="text-3xl md:text-4xl font-bold mb-5">All My Parcels</h2>
+      <h2 className="text-3xl md:text-4xl font-bold mb-5">My Parcels</h2>
 
       {/* total card */}
       <div className="w-48 bg-gray-100 rounded-2xl p-4 shadow-sm flex items-center gap-4 mb-5">
@@ -134,15 +133,19 @@ const MyParcels = () => {
                 </td>
 
                 {/* Payment */}
-                <td className={`px-4 py-4 text-sm font-medium ${parcel.paymentStatus==='unpaid'? 'text-red-600': 'text-green-600'}`}>
-                  {
-                    parcel?.paymentStatus
-                  }
+                <td
+                  className={`px-4 py-4 text-sm font-medium ${
+                    parcel.paymentStatus === "unpaid"
+                      ? "text-red-600"
+                      : "text-green-600"
+                  }`}
+                >
+                  {parcel?.paymentStatus}
                 </td>
 
                 {/* Delivery */}
                 <td className="px-4 py-4 text-sm font-medium text-green-600">
-                  pending
+                  {parcel?.deliveryStatus}
                 </td>
 
                 {/* Action */}
@@ -152,7 +155,9 @@ const MyParcels = () => {
 
                     <button
                       onClick={() => handlePayment(parcel)}
-                      className={`btn btn-sm bg-primary text-black px-4 py-1 rounded-md text-sm font-medium ${parcel.paymentStatus==='paid' && 'hidden'}`}
+                      className={`btn btn-sm bg-primary text-black px-4 py-1 rounded-md text-sm font-medium ${
+                        parcel.paymentStatus === "paid" && "hidden"
+                      }`}
                     >
                       Pay
                     </button>

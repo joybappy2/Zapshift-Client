@@ -15,6 +15,10 @@ import Payment from "../../pages/Dashboard/Payment/Payment";
 import PaymentSuccess from "../../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancelled from "../../pages/Dashboard/Payment/PaymentCancelled";
 import PaymenntHistory from "../../pages/Dashboard/Payment/PaymenntHistory";
+import RidersApplications from "../../pages/Dashboard/RidersApplication/RidersApplications";
+import ManageUsers from "../../pages/Dashboard/ManageUsers/ManageUsers";
+import AdminRoute from "./AdminRoute";
+import AssignRiders from "../../pages/Dashboard/AssignRiders/AssignRiders";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +99,31 @@ const router = createBrowserRouter([
       {
         path: "payment-history",
         Component: PaymenntHistory,
+      },
+
+      {
+        path: "riders-application",
+        element: (
+          <AdminRoute>
+            <RidersApplications></RidersApplications>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "assign-riders",
+        element: (
+          <AdminRoute>
+           <AssignRiders></AssignRiders>
+          </AdminRoute>
+        ),
       },
     ],
   },

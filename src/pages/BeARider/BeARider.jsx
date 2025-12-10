@@ -18,7 +18,10 @@ const BeARider = () => {
       });
   }, []);
 
-  const districts = warehouses?.map((house) => house.district);
+  const regions = warehouses?.map((house) => house.region);
+  const uniqueRegions = [...new Set(regions)];
+  console.log(uniqueRegions);
+
   const selectedDistrict = watch("district");
 
   const coveredAreasByDistrict = (distritcName) => {
@@ -33,6 +36,7 @@ const BeARider = () => {
   const riderFormSubmit = (data) => {
     const age = parseInt(data.age);
     data.age = age;
+    data.workingStatus = "available";
 
     console.log(data);
 
@@ -116,7 +120,7 @@ const BeARider = () => {
                       Select your District
                     </option>
 
-                    {districts?.map((d, idx) => (
+                    {uniqueRegions?.map((d, idx) => (
                       <option key={idx} value={d}>
                         {d}
                       </option>
@@ -156,7 +160,7 @@ const BeARider = () => {
             </div>
 
             {/* Row 4: Warehouse Selection (Full Width) */}
-            <div className="w-full">
+            <div className="w-full hidden">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Which wire-house you want to work?
               </label>
@@ -177,6 +181,7 @@ const BeARider = () => {
                     </option>
                   ))}
                 </select>
+
                 {/* Custom dropdown arrow */}
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500">
                   <svg
