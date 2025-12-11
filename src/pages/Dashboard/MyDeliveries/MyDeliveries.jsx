@@ -8,7 +8,7 @@ const MyDeliveries = () => {
   const { user } = use(AuthContext);
   const axiosSecure = useAxios();
 
-  const { data: parcels } = useQuery({
+  const { data: parcels, refetch } = useQuery({
     queryKey: ["parcels"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -18,14 +18,38 @@ const MyDeliveries = () => {
     },
   });
 
+  const { data: rider } = useQuery({
+    queryKey: ["/rider", user?.email, parcels],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/rider?email=${user?.email}`);
+      return res.data;
+    },
+  });
+
+  console.log("rider ", rider);
+
   const handleRejectParcel = (parcel) => {
     axiosSecure
       .patch(`/reject-parcel/${parcel._id}`, { riderId: parcel.riderId })
       .then((res) => {
         if (res.data.modifiedCount) {
           alert("Parcel Rejected");
+          refetch();
         }
       });
+  };
+
+  const handleAcceptParcel = (parcel) => {
+    const riderInfo = {
+      riderId: parcel.riderId,
+    };
+    console.log("clik");
+    axiosSecure.patch(`/accept-parcel/${parcel._id}`, riderInfo).then((res) => {
+      if (res.data.modifiedCount) {
+        alert("Parcel Accepted");
+        refetch();
+      }
+    });
   };
 
   return (
@@ -53,6 +77,8 @@ const MyDeliveries = () => {
               <th>#</th>
               <th>Parcel Name</th>
               <th>Pickup Location</th>
+              <th>Sender Email</th>
+              <th>Delivery Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -62,16 +88,27 @@ const MyDeliveries = () => {
                 <th>{idx + 1}</th>
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.senderRegion}</td>
+                <td>{parcel.senderEmail}</td>
+                <td>{parcel.deliveryStatus}</td>
                 <td className="space-x-2">
-                  <button className="btn btn-primary btn-sm text-black">
-                    Accept Parcel
-                  </button>
-                  <button
-                    onClick={() => handleRejectParcel(parcel)}
-                    className="btn btn-warning btn-sm"
-                  >
-                    Reject Parcel
-                  </button>
+                  {/* Rider info needed here to show btn conditinally */}
+
+                  <>
+                    <button
+                      disabled={rider?.workingStatus !== "available"}
+                      onClick={() => handleAcceptParcel(parcel)}
+                      className={`btn bg-primary btn-sm `}
+                    >
+                      Accept Parcel
+                    </button>
+                    <button
+                      disabled={rider?.workingStatus !== "available"}
+                      onClick={() => handleRejectParcel(parcel)}
+                      className="btn btn-warning btn-sm"
+                    >
+                      Reject Parcel
+                    </button>
+                  </>
                 </td>
               </tr>
             ))}

@@ -57,6 +57,7 @@ const AssignRiders = () => {
         if (res.data.modifiedCount) {
           parcelRefetch();
           alert("parcel delivery status updated");
+          findRiderModalRef.current.close()
         }
       });
   };
