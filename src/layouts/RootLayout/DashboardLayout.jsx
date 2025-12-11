@@ -2,6 +2,7 @@ import Logo from "../../components/Logo/Logo";
 import { Link, NavLink, Outlet } from "react-router";
 import { FaBoxOpen, FaUsers } from "react-icons/fa";
 import { IoIosAddCircle, IoMdAdd, IoMdHome } from "react-icons/io";
+import { GiTargetDummy } from "react-icons/gi";
 import { use } from "react";
 import { AuthContext } from "../../Authentication/AuthContext/AuthContext";
 import { MdOutlinePayments } from "react-icons/md";
@@ -50,7 +51,11 @@ const DashboardLayout = () => {
               <Logo></Logo>
             </div>
 
-            <div>{user?.email}</div>
+            <div>
+              {user?.email}
+              <br />
+              <span>{role.role}</span>
+            </div>
           </nav>
           {/* Page content here */}
 
@@ -116,6 +121,7 @@ const DashboardLayout = () => {
                 </li>
               </NavLink>
 
+              {/* Admin Links */}
               {role.role === "admin" && (
                 <>
                   {/* Riders Application */}
@@ -152,23 +158,40 @@ const DashboardLayout = () => {
                     </li>
                   </NavLink>
 
-                  
-              {/* assign riders */}
-              <NavLink to="/dashboard/assign-riders">
-                <li>
-                  <button
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Assign Riders"
-                  >
-                    {/* Pay icon */}
-                    <IoMdAdd className="text-lg" />
-                    <span className="is-drawer-close:hidden">
-                      Assign Riders
-                    </span>
-                  </button>
-                </li>
-              </NavLink>
+                  {/* assign riders */}
+                  <NavLink to="/dashboard/assign-riders">
+                    <li>
+                      <button
+                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                        data-tip="Assign Riders"
+                      >
+                        {/* Pay icon */}
+                        <IoMdAdd className="text-lg" />
+                        <span className="is-drawer-close:hidden">
+                          Assign Riders
+                        </span>
+                      </button>
+                    </li>
+                  </NavLink>
                 </>
+              )}
+
+              {role.role === "rider" && (
+                <NavLink to="/dashboard/my-deliveries">
+                  <li>
+                    <button
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="My Deliveries"
+                    >
+                      {/* Pay icon */}
+                      <GiTargetDummy />
+
+                      <span className="is-drawer-close:hidden">
+                        My Deliviries
+                      </span>
+                    </button>
+                  </li>
+                </NavLink>
               )}
             </ul>
           </div>

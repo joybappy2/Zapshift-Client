@@ -19,6 +19,8 @@ import RidersApplications from "../../pages/Dashboard/RidersApplication/RidersAp
 import ManageUsers from "../../pages/Dashboard/ManageUsers/ManageUsers";
 import AdminRoute from "./AdminRoute";
 import AssignRiders from "../../pages/Dashboard/AssignRiders/AssignRiders";
+import RiderRoute from "./RiderRoute";
+import MyDeliveries from "../../pages/Dashboard/MyDeliveries/MyDeliveries";
 
 const router = createBrowserRouter([
   {
@@ -121,8 +123,16 @@ const router = createBrowserRouter([
         path: "assign-riders",
         element: (
           <AdminRoute>
-           <AssignRiders></AssignRiders>
+            <AssignRiders></AssignRiders>
           </AdminRoute>
+        ),
+      },
+      {
+        path: "my-deliveries",
+        element: (  
+          <RiderRoute>
+            <MyDeliveries></MyDeliveries>
+          </RiderRoute>
         ),
       },
     ],
