@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { use } from "react";
-import { FaBiking } from "react-icons/fa";
+import { FaBiking, FaCheck } from "react-icons/fa";
 import useAxios from "../../../hooks/useAxios";
 import { AuthContext } from "../../../Authentication/AuthContext/AuthContext";
 
@@ -52,6 +52,24 @@ const MyDeliveries = () => {
     });
   };
 
+  const handleMarkedAsPickedUp = (parcel, deliveryStatus, workingStatus) => {
+    const parcelId = parcel._id;
+    const riderInfo = {
+      riderId: parcel.riderId,
+    };
+
+    axiosSecure
+      .patch(
+        `/parcel/${parcelId}/delivery?deliveryStatus=${deliveryStatus}&workingStatus=${workingStatus}`,
+        riderInfo
+      )
+      .then((res) => {
+        if (res.data.modifiedCount) {
+          alert(`Parcel is ${deliveryStatus}`);
+        }
+      });
+  };
+
   return (
     <div className="bg-base-100 md:p-10 p-4 rounded-2xl">
       <h2 className="text-3xl md:text-4xl font-bold mb-5">My Deliveries</h2>
@@ -80,6 +98,8 @@ const MyDeliveries = () => {
               <th>Sender Email</th>
               <th>Delivery Status</th>
               <th>Actions</th>
+              <th>Picked-Up</th>
+              <th>Delivered</th>
             </tr>
           </thead>
           <tbody>
@@ -95,20 +115,69 @@ const MyDeliveries = () => {
 
                   <>
                     <button
-                      disabled={rider?.workingStatus !== "available"}
+                      disabled={
+                        rider?.workingStatus !== "available" ||
+                        parcel.deliveryStatus === "delivered"
+                      }
                       onClick={() => handleAcceptParcel(parcel)}
                       className={`btn bg-primary btn-sm `}
                     >
                       Accept Parcel
                     </button>
                     <button
-                      disabled={rider?.workingStatus !== "available"}
+                      disabled={
+                        rider?.workingStatus !== "available" ||
+                        parcel.deliveryStatus === "delivered"
+                      }
                       onClick={() => handleRejectParcel(parcel)}
                       className="btn btn-warning btn-sm"
                     >
                       Reject Parcel
                     </button>
                   </>
+                </td>
+
+                {/* Mark PickedUp  */}
+                <td>
+                  <button
+                    disabled={
+                      parcel.deliveryStatus === "picked up" ||
+                      parcel.deliveryStatus === "delivered" ||
+                      parcel.deliveryStatus === "assigned to rider"
+                    }
+                    onClick={() =>
+                      handleMarkedAsPickedUp(
+                        parcel,
+                        "picked up",
+                        "out for delivery"
+                      )
+                    }
+                    className="btn btn-info text-white p-2 w-fit h-fit"
+                  >
+                    <FaCheck
+                      className="hover:animate-bounce"
+                      size={20}
+                    ></FaCheck>
+                  </button>
+                </td>
+
+                {/* Mark Delivered */}
+                <td>
+                  <button
+                    disabled={
+                      parcel.deliveryStatus === "delivered" ||
+                      parcel.deliveryStatus !== "picked up"
+                    }
+                    onClick={() =>
+                      handleMarkedAsPickedUp(parcel, "delivered", "available")
+                    }
+                    className="btn btn-success text-white p-2 w-fit h-fit"
+                  >
+                    <FaCheck
+                      className="hover:animate-bounce"
+                      size={20}
+                    ></FaCheck>
+                  </button>
                 </td>
               </tr>
             ))}
